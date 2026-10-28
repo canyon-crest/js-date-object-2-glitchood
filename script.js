@@ -8,7 +8,6 @@
 //  Do NOT add onclick in the HTML.
 // ============================================
 
-
 // ============================================
 //  WARM-UP: Day Name
 // ============================================
@@ -16,20 +15,27 @@
 // element with ID "warmUpDate".
 
 // STEP 1: Create a new Date object using: let now = new Date();
+let now = new Date();
 
 // STEP 2: Use .getDay() to get the day of the week as a number.
 //         Sunday = 0, Monday = 1, Tuesday = 2, ... Saturday = 6
-
+let day = now.getDay();
 // STEP 3: Create an array of day names:
-//         let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
-//                     "Thursday", "Friday", "Saturday"];
-
+let days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 // STEP 4: Use the day number as an index to get the day name
 //         from the array.
-
+let dayName = days[day];
 // STEP 5: Display the day name in the element with ID "warmUpDate"
-//         using document.getElementById("warmUpDate").innerHTML
-
+//         using document.getElementById("warmUpDate").textContent
+document.getElementById("warmUpDate").innerHTML = dayName;
 
 // ============================================
 //  PART 1: Current Date Display
@@ -41,17 +47,20 @@
 // STEP 6: Create a new Date object (or reuse the one from above).
 
 // STEP 7: Get the month using .getMonth()
+let month = now.getMonth() + 1;
 //         IMPORTANT: .getMonth() returns 0–11 (January = 0)
 //         so you must add 1 to get the correct month number.
 
 // STEP 8: Get the day of the month using .getDate()
+let date = now.getDate();
 
 // STEP 9: Get the year using .getFullYear()
+let year = now.getFullYear();
 
 // STEP 10: Build the date string: month + "/" + day + "/" + year
 //          Display it in the element with ID "myDate"
-
-
+let dateStr = `${month}/${date}/${year}`;
+document.getElementById("myDate").innerHTML = dateStr;
 // ============================================
 //  PART 2: Elapsed Timer
 // ============================================
@@ -61,15 +70,22 @@
 
 // STEP 11: Record the start time using new Date().getTime()
 //          This gives you the current time in milliseconds.
+let startTime = new Date().getTime();
 
 // STEP 12: Create a variable to hold the timer ID (for stopping later).
+let timer = setInterval(() => {
+  let currentTime = new Date().getTime();
+  document.getElementById("myTimer").innerHTML = (
+    (currentTime - startTime) /
+    1000
+  ).toFixed(3);
+}, 10);
 //          Use setInterval() with a delay of 10 milliseconds.
 //          Inside the interval function:
 //          a) Get the current time: new Date().getTime()
 //          b) Calculate elapsed seconds: (currentTime - startTime) / 1000
 //          c) Display the elapsed time using .toFixed(3)
 //             in the element with ID "myTimer"
-
 
 // ============================================
 //  PART 3: Start/Stop Toggle Button
@@ -83,15 +99,35 @@
 
 // STEP 13: Create a variable to track whether the timer is
 //          currently running (let running = true;)
+let running = true;
+let btn = document.getElementById("myBtn");
+btn.addEventListener("click", () => {
+  if (running) {
+    clearInterval(timer);
+    btn.innerHTML = "Start";
+    running = false;
+  } else {
+    startTime = new Date().getTime();
+    timer = setInterval(() => {
+      let currentTime = new Date().getTime();
+      document.getElementById("myTimer").innerHTML = (
+        (currentTime - startTime) /
+        1000
+      ).toFixed(3);
+    }, 10);
+    btn.innerHTML = "Stop";
+    running = true;
+  }
+});
 
 // STEP 14: Add a click event listener to the button (ID "myBtn").
 //          Inside the listener:
 //          a) If running is true:
 //             - Use clearInterval() to stop the timer
-//             - Change button innerHTML to "Start"
+//             - Change button textContent to "Start"
 //             - Set running to false
 //          b) If running is false:
 //             - Record a new start time
 //             - Start a new setInterval (same as STEP 12)
-//             - Change button innerHTML to "Stop"
+//             - Change button textContent to "Stop"
 //             - Set running to true
